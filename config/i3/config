@@ -164,6 +164,7 @@ colors {
   }
 }
 
+<<<<<<< HEAD
 client.focused #6c71c4 #6c71c4 #fdf6e3 #6c71c4
 client.focused_inactive #073642 #073642 #eee8d5 #6c71c4
 client.unfocused #073642 #073642 #93a1a1 #586e75
@@ -176,3 +177,7 @@ exec --no-startup-id wicd-client --tray
 
 for_window [title="Android Emulator - Nexus_9_API_25:5554"] floating enable
 for_window [title="Wicd Network Manager"] floating enable
+=======
+exec --no-startup-id compton
+
+>>>>>>> 46408f0b1c49f97433b5068e0ea63ffd1a9e36f7

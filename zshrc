@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/john/.oh-my-zsh
+  export ZSH=/home/$USER/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -83,15 +83,5 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-export NDK=/home/john/android/ndk-bundle
-export ANDROID_NDK_HOME=$NDK
-export ANDROID_NDK_ROOT=$NDK
-export ANDROID_NDK_ARM=$NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64
-export ANDROID_NDK_CLANG=$NDK/toolchains/llvm/prebuilt/linux-x86_64  # -3.7/prebuilt/linux-x86_64
-export ANDROID_SDK_ROOT=~/android
-export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
-
-export BROWSER=vivaldi-stable
 
 alias nexus9="$ANDROID_SDK_ROOT/tools/emulator -avd Nexus_9_API_25 -use-system-libs"
