@@ -4,13 +4,15 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.DynamicLog(xmobar)
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Layout.Spacing
+import XMonad.Layout.Accordion
+import XMonad.Layout.Tabbed
 import XMonad.Util.EZConfig(additionalKeys)
 import System.IO
 
 main = do
-    spawnPipe "compton -b"
-    spawnPipe "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 10 --transparent true --tint 0x191970 --height 26"
-    spawnPipe "hsetroot -solid '#000077'"
+    -- spawnPipe "compton -b"
+    -- spawnPipe "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 10 --transparent true --tint 0x191970 --height 26"
+    -- spawnPipe "hsetroot -solid '#000077'"
     xmonad =<< xmobar desktopConfig
         { 
             terminal = "termite",
@@ -19,11 +21,8 @@ main = do
             layoutHook = avoidStruts $ 
                          smartSpacingWithEdge 5 $ 
                          Tall 1 (3/100) (1/2) ||| 
-                         Full,
+                         Full ||| Accordion,
             manageHook = manageDocks <+> manageHook defaultConfig
-            } 
-            -- `additionalKeys` [
-                -- ((mod4Mask .|. shiftMask, xK_g), sendMessage $ ToggleGaps)
-            -- ]
+        } 
 
 
