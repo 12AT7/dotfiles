@@ -22,8 +22,7 @@ main = do
             borderWidth = 2,
             layoutHook = avoidStruts $ 
                          smartSpacingWithEdge 5 $ 
-                         Mirror (ThreeCol 1 (3/100) (1/2)) ||| Full,
-                         -- Mirror (Tall 1 (3/100) (1/2)) ||| Full,
+                         Mirror (ThreeColMid 1 (3/100) (1/2)) ||| Full,
             -- manageHook = manageDocks <+> manageHook defaultConfig
             manageHook = isDialog --> doF W.shiftMaster <+> doF W.focusDown,
             logHook = dynamicLogWithPP $ xmobarPP

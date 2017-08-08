@@ -5,6 +5,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'lifepillar/vim-solarized8'
 Plugin 'flazz/vim-colorschemes'
+Plugin 'JamshedVesuna/vim-markdown-preview'
 call vundle#end()
 filetype plugin indent on
 
@@ -23,3 +24,6 @@ endf
 
 nmap <leader>- :<c-u>call Solarized8Contrast(-v:count1)<cr>
 nmap <leader>+ :<c-u>call Solarized8Contrast(+v:count1)<cr>
+
+let vim_markdown_preview_github=1
+let vim_markdown_preview_browser='Chromium'
