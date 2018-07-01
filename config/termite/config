@@ -19,4 +19,5 @@ color14 = #93a1a1
 color15 = #fdf6e3
 
 [options]
+font = Monospace 12
 scrollback_lines = 100000

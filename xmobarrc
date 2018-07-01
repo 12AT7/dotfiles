@@ -1,0 +1,6 @@
+Config {
+    font = "-*-Fixed-Bold-R-Normal-*-16-*-*-*-*-*-*-*",
+    position = TopW L 90,
+    sepChar = "%",
+    alignSep = "}{"
+}

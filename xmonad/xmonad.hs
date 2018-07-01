@@ -10,22 +10,30 @@ import XMonad.Util.EZConfig(additionalKeys)
 import System.IO
 import qualified XMonad.StackSet as W
 import XMonad.Hooks.ManageHelpers
+import System.Taffybar.Hooks.PagerHints
 
 main = do
-    spawnPipe "compton -b"
-    spawnPipe "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 10 --transparent true --tint 0x191970 --height 26"
-    spawnPipe "hsetroot -solid '#000077'"
-    xmonad =<< xmobar desktopConfig
+    xmproc <- spawnPipe "xmobar"
+    xmonad $ defaultConfig
         { 
-            terminal = "termite",
-            modMask = mod4Mask,
-            borderWidth = 2,
+            manageHook = manageDocks <+> manageHook defaultConfig,
             layoutHook = avoidStruts $ 
                          smartSpacingWithEdge 5 $ 
-                         Mirror (ThreeColMid 1 (3/100) (1/2)) ||| Full,
-            -- manageHook = manageDocks <+> manageHook defaultConfig
-            manageHook = isDialog --> doF W.shiftMaster <+> doF W.focusDown,
-            logHook = dynamicLogWithPP $ xmobarPP
-        } 
+                         -- Mirror (ThreeColMid 1 (3/100) (1/2)) ||| Full,
+                         ThreeColMid 1 (3/100) (1/2) ||| Full,
+	    logHook = dynamicLogWithPP xmobarPP
+			{ ppOutput = hPutStrLn xmproc,
+			  ppTitle = xmobarColor "green" "" . shorten 50
+			},
+	    handleEventHook = mconcat [
+		docksEventHook,
+		handleEventHook defaultConfig ],
+            terminal = "termite",
+            modMask = mod4Mask,
+            borderWidth = 2
+           } `additionalKeys`
+	   [
+		((0, xK_Print), spawn "shutter")
+	   ]
 
 
