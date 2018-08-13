@@ -3,6 +3,7 @@ import XMonad.Config.Desktop
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.DynamicLog
 import XMonad.Util.Run(spawnPipe)
+import XMonad.Util.SpawnOnce
 import XMonad.Layout
 import XMonad.Layout.Spacing
 import XMonad.Layout.ThreeColumns
@@ -25,12 +26,15 @@ myManageHook = composeAll [
                className =? "Gimp" --> doFloat
                ] 
 
+myStartupHook = spawnOnce "albert"
+
 main = do
     xmproc <- spawnPipe "/home/johng/.cabal/bin/xmobar"
     xmonad $ defaultConfig
         { 
             modMask = mod4Mask,
             terminal = "termite",
+	    startupHook = myStartupHook,
             manageHook = myManageHook,
             layoutHook = myLayout,
             logHook = dynamicLogWithPP xmobarPP
