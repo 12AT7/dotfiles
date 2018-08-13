@@ -3,37 +3,47 @@ import XMonad.Config.Desktop
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.DynamicLog
 import XMonad.Util.Run(spawnPipe)
+import XMonad.Layout
 import XMonad.Layout.Spacing
 import XMonad.Layout.ThreeColumns
-import XMonad.Layout.Tabbed
 import XMonad.Util.EZConfig(additionalKeys)
 import System.IO
-import qualified XMonad.StackSet as W
 import XMonad.Hooks.ManageHelpers
-import System.Taffybar.Hooks.PagerHints
+import XMonad.Layout.PerScreen
+
+myLayout = 
+    avoidStruts $ 
+    smartSpacingWithEdge 4 $
+    (ifWider 1900 horizontalLayout verticalLayout) ||| Full
+  where
+    horizontalLayout = Tall 1 (3/100) (1/2)
+    verticalLayout = ThreeColMid 1 (3/100) (1/2)
+
+myManageHook = composeAll [
+               manageDocks,
+               className =? "Shutter" --> doFloat,
+               className =? "Gimp" --> doFloat
+               ] 
 
 main = do
-    xmproc <- spawnPipe "xmobar"
+    xmproc <- spawnPipe "/home/johng/.cabal/bin/xmobar"
     xmonad $ defaultConfig
         { 
-            manageHook = manageDocks <+> manageHook defaultConfig,
-            layoutHook = avoidStruts $ 
-                         smartSpacingWithEdge 5 $ 
-                         -- Mirror (ThreeColMid 1 (3/100) (1/2)) ||| Full,
-                         ThreeColMid 1 (3/100) (1/2) ||| Full,
-	    logHook = dynamicLogWithPP xmobarPP
+            modMask = mod4Mask,
+            terminal = "termite",
+            manageHook = myManageHook,
+            layoutHook = myLayout,
+            logHook = dynamicLogWithPP xmobarPP
 			{ ppOutput = hPutStrLn xmproc,
 			  ppTitle = xmobarColor "green" "" . shorten 50
 			},
 	    handleEventHook = mconcat [
 		docksEventHook,
 		handleEventHook defaultConfig ],
-            terminal = "termite",
-            modMask = mod4Mask,
             borderWidth = 2
-           } `additionalKeys`
-	   [
-		((0, xK_Print), spawn "shutter")
-	   ]
+           } `additionalKeys` [ 
+               ((mod4Mask, xK_b), spawn "chromium"),
+               ((0, xK_Print), spawn "shutter")
+             ]
 
 
