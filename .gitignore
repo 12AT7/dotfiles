@@ -1,7 +1,3 @@
 *.swp
-xmonad.o
-xmonad.state
-xmonad.hi
-xmonad.errors
-xmonad-x86*
-
+__pycache__/
+*.py[cod]
