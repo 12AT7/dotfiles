@@ -97,7 +97,6 @@ keys = [
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     Key([mod, "shift"], "Return", lazy.spawn('alacritty'), desc="Launch terminal"),
     Key([mod, "shift"], "c", lazy.spawn('chromium-browser'), desc="Launch Chrome"),
-    Key([mod, "shift"], "m", lazy.spawn('cloudcompare.CloudCompare'), desc="Launch CloudCompare"),
     Key([mod, "shift"], "g", lazy.spawn('code'), desc="Launch VSCode")
 ]
 
@@ -152,8 +151,23 @@ screens = [
     Screen(
         bottom=bar.Bar(
             [
+                widget.GroupBox(
+                    font="Ubuntu Bold",
+                    fontsize=18,
+                    padding_x = 20,
+                    padding_y = 5,
+                    highlight_method = "block",
+                    rounded=False,
+                    ),
                 widget.CurrentLayout(),
-                widget.GroupBox()
+                widget.WindowName(fmt="{:10}"),
+                widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
+                widget.Systray(padding=5),
+                widget.CPUGraph(border_width=1, margin_y=0, line_width=2),
+                widget.TextBox(text="mem:"),
+                widget.MemoryGraph(border_width=1, margin_y=0, line_width=2),
+                widget.Clock(format='%Y-%m-%d %a %I:%M %p'),
+                widget.CPU(),
             ],
             64,
         ),
