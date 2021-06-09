@@ -1,0 +1,12 @@
+#!/usr/bin/python
+
+import sys, subprocess
+
+_, event, id, type, desc = sys.argv
+
+if (event, type) == ('XIDeviceEnabled', 'XISlaveKeyboard'):
+    subprocess.run(['setxkbmap', '-layout', 'us', '-variant', 'dvorak', '-option', 'ctrl:nocaps'])
+    subprocess.run(['ddcutil', '--display=1', 'setvcp', '0x60', '0x0f'])
+    subprocess.run(['ddcutil', '--display=2', 'setvcp', '0x60', '0x0f'])
+
+print(event,type)

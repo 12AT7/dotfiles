@@ -1,0 +1,23 @@
+session_name: wr_svc
+start_directory: ~/repo/cvip/leapcore/kraken
+#shell_command_before:
+#  - source ~/repo/cvip/leapcore/kraken/build/env.sh
+windows:
+  - window_name: playback
+    layout: main-horizontal
+    options:
+      main-pane-height: 20
+    panes:
+      - shell_command:
+        #- printf '\033]2;%s\033\\' 'Kraken'
+        #- sleep 5
+        #- kraken-launch-service --mode playback --config ~/peq/wr_cv_engine.yaml --service wr_svc --recording_name door
+      - shell_command:
+        #- printf '\033]2;%s\033\\' 'DSP'
+        #- kraken-launch-dsp dsp_algo_wr
+      - shell_command:
+        #- printf '\033]2;%s\033\\' 'CVIP Log'
+        #- mldb cvip shell tail -f /var/log/cvip/cvip.log
+      - shell_command:
+        #- printf '\033]2;%s\033\\' 'AP Log'
+        #- mldb log

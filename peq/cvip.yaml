@@ -1,0 +1,6 @@
+- name: Start CVIP
+  shell: "mldb cvip start cvip"
+  delegate_to: localhost
+- name: Port forwarding
+  shell: "mldb reverse tcp:2222 tcp:127.0.0.1:22"
+  delegate_to: localhost

@@ -1,0 +1,60 @@
+- hosts: cvip
+  vars:
+    user: "{{ lookup('env', 'USER') }}"
+    home: "{{ lookup('env', 'HOME') }}"
+    peq: "G452X7Q0000P"
+  gather_facts: no # Needs SSH to run, put PEQ not running CVIP server yet
+  tasks:
+  - name: Wait for device
+    shell: "mldb wait-for-device"
+    delegate_to: localhost
+  - name: Reboot device
+    shell: "mldb reboot"
+    delegate_to: localhost
+  - name: Wait for device
+    shell: "mldb wait-for-device"
+    delegate_to: localhost
+  - name: Start CVIP
+    shell: "mldb cvip start cvip"
+    register: cvip_result
+    delegate_to: localhost
+  - name: Start CVIP console output
+    debug: msg="{{cvip_result.stdout_lines}}"
+  - name: Launch DSP service
+    shell: "(kraken-launch-dsp dsp_algo_wr)"
+    args:
+      chdir: /home/local/MAGICLEAP/jgalbraith/repo/cvip/leapcore/kraken
+    async: 60
+    poll: 0
+    register: dsp_sleeper
+    delegate_to: localhost
+  - name: Port forwarding
+    shell: "mldb reverse tcp:2222 tcp:127.0.0.1:22"
+    delegate_to: localhost
+  # - name: Gathering facts # CVIP running; it's OK now to gather facts
+  #   setup:
+  - name: Create ssh directory
+    file:
+      path: ".ssh"
+      state: directory
+      mode: '700'
+  - name: copy SSH key
+    ansible.builtin.copy:
+      src: "{{ home }}/.ssh/{{ peq }}.id_rsa"
+      dest: .ssh/id_rsa
+      mode: '600'
+  - name: set known_hosts
+    shell: "ssh-keyscan -p 2222 192.168.1.3 >> /root/.ssh/known_hosts"
+    register: result
+  - include_tasks: mount_sshfs.yaml
+    with_items:
+      - { mountpoint: "recordings", user: "{{user}}", hostdir: "{{home}}/recordings/change_detection" }
+      - { mountpoint: "artifacts", user: "{{user}}", hostdir: "{{home}}/peq/artifacts" }
+  # - name: Launch Kraken
+  #   shell: "(kraken-launch-service --mode playback --config ~/peq/wr_cv_engine.yaml --service wr_svc --recording_name door)"
+  #   args:
+  #     chdir: /home/local/MAGICLEAP/jgalbraith/repo/cvip/leapcore/kraken
+  #   delegate_to: localhost
+  #   register: kraken_result
+  # - debug: msg="{{item}}"
+  #   with_lines: /var/log/cvip/cvip.log
